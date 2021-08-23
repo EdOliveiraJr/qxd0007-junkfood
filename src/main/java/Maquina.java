@@ -4,8 +4,8 @@ import java.util.Vector;
 import jdk.nashorn.internal.runtime.regexp.joni.ast.QuantifierNode;
 
 public class Maquina {
-    private int qtdEspirais;
-    private int maximoProdutos;
+    private final int qtdEspirais;
+    private final int maximoProdutos;
     private double faturamento;
     private double saldo;
     
@@ -34,7 +34,7 @@ public class Maquina {
     }
 
     public int getSizeEspirais(){
-        return qtdEspirais;
+        return espirais.size();
     }
 
     public Espiral getEspiral(int indice){
@@ -42,14 +42,6 @@ public class Maquina {
             return null;
         }
         return espirais.get(indice);
-    }
-
-    public int getProdutosNasEspirais(){
-        int total = 0;
-        for (Espiral espiral : espirais) {
-            total += espiral.getQuantidade();
-        }
-        return total;
     }
 
     public boolean inserirDinheiro(double value){
@@ -70,17 +62,17 @@ public class Maquina {
         if(indice >= getSizeEspirais() || indice < 0){
             return false;
         }
-        if(maximoProdutos >= getProdutosNasEspirais() + quantidade){
-            Espiral nova = new Espiral();
-            nova.setNomeDoProduto(nome);
-            nova.setQuantidade(quantidade);
-            nova.setPreco(preco);
-            espirais.set(indice, nova);
-            return true;
-        }else{
+
+        if(quantidade > maximoProdutos){
             return false;
         }
-        
+
+        Espiral nova = new Espiral();
+        nova.setNomeDoProduto(nome);
+        nova.setQuantidade(quantidade);
+        nova.setPreco(preco);
+        espirais.set(indice, nova);
+        return true;
     }
 
     public boolean limparEspiral(int indice){
@@ -101,6 +93,7 @@ public class Maquina {
             return false;
         }
         saldo -= espirais.get(indice).getPreco();
+        faturamento += espirais.get(indice).getPreco(); 
         getEspiral(indice).darSaida();       
         return true;
         

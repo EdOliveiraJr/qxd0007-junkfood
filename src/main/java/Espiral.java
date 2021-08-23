@@ -32,5 +32,13 @@ public class Espiral{
 
     public void darSaida(){
         qtdProduto--;
+        if(qtdProduto == 0){
+            setNomeDoProduto(" - ");
+            setPreco(0.0);
+        }
+    }
+
+    public String toString(){
+        return nomeProduto +"/"+ qtdProduto +"/"+ preco; 
     }
 }
